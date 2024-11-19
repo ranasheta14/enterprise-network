@@ -1,0 +1,121 @@
+layer2 switch configurations:
+
+en
+conf t
+hostname 
+banner motd #Authorised access only!!#
+no ip domain lookup
+line console 0
+password cisco
+login
+exit
+enable password cisco
+enable secret class
+service password-encryption 
+exit
+
+-----------------------------------------------------
+
+multilayer switch configurations :
+en
+conf t
+hostname MLT-SW2
+banner motd #Authorised access only!!#
+no ip domain lookup
+line console 0
+password cisco
+login
+exit
+enable password cisco
+enable secret class
+service password-encryption 
+exit
+conf t
+IP domain-name cisco.net
+username admin password cisco
+crypto key generate rsa 
+line vty 0 15
+login local
+transport input ssh
+exit
+exit 
+
+--------------------------------------------------------
+
+core router configurations:
+
+en
+conf t
+hostname CORE-R2
+banner motd #Authorised access only!!#
+no ip domain lookup
+line console 0
+password cisco
+login
+exit
+enable password cisco
+enable secret class
+service password-encryption 
+exit
+conf t
+IP domain-name cisco.net
+username admin password cisco
+crypto key generate rsa 
+line vty 0 15
+login local
+transport input ssh
+exit
+exit 
+
+--------------------------------------------------------
+
+trunk configurations:
+
+int range fa0/1-2
+switchport mode trunk
+exit
+vlan 60
+name ServerRoom
+vlan 99
+name BlackHole
+int range fa0/3-24
+switchport mode access 
+switchport access vlan 60
+exit
+int range gi0/1-2
+switchport mode access
+switchport access vlan 99
+exit
+do wr
+
+-------------------------------------------------------
+
+finance switchport security
+
+int range fa0/3-24
+switchport port-security maximum 1
+switchport port-security mac-address sticky
+switchport port-security violation shutdown
+exit
+do wr
+
+-------------------------------------------------------
+
+layer 3 switch trunk and VLANs:
+int range gi1/0/3-8
+switchport mode trunk
+exit
+vlan 10
+name Sales
+vlan 20
+name HR
+vlan 30
+name Finance
+vlan 40
+name Admin
+vlan 50
+name ICT
+vlan 60
+name ServerRoom
+exit
+do wr
